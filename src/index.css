@@ -1,0 +1,10 @@
+@import "tailwindcss";
+body{
+    margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  /* Soft pearl to warm luxury stone gray */
+  background: linear-gradient(135deg, #98ee73a3 0%, #f6f6a3 50%, #b390f3 100%);
+  background-attachment: fixed; /* Isse scroll karne par background stretch nahi hota, fixed rehta hai */
+  /* color: #1f2937; */
+}
