@@ -7,11 +7,12 @@ import StaffLogin from './Component/main/Login/StaffLogin.jsx';
 import UserLogin from './Component/main/Login/UserLogin.jsx'; 
 
 // ─── NEW COMPONENT IMPORTS ───
-import Location from './Component/main/Header/Location.jsx'; // 👈 Destination page ke liye
-import StaffPortal from './Component/main/Staff/StaffPortal.jsx'; // 👈 Staff dashboard panel ke liye
+import Location from './Component/main/Header/Location.jsx'; 
+import StaffPortal from './Component/main/Staff/StaffPortal.jsx'; 
 import AayamClub from './Component/main/Header/AayamClub.jsx';
 import AboutUs from './Component/main/Header/AboutUs.jsx'
 
+// Common layout for customer-facing pages
 const Layout = ({ children }) => {
   return (
     <div className="bg-[#0b0e14] min-h-screen text-white flex flex-col justify-between">
@@ -38,7 +39,7 @@ const App = () => {
           } 
         />
         
-        {/* ─── NEW: DESTINATIONS COMPONENT ROUTE ─── */}
+        {/* DESTINATIONS COMPONENT ROUTE */}
         <Route 
           path="/destinations" 
           element={
@@ -48,7 +49,7 @@ const App = () => {
           } 
         />
         
-        {/* USER LOGIN ROUTE (Only Login, No Registration) */}
+        {/* USER LOGIN ROUTE */}
         <Route 
           path="/login" 
           element={
@@ -67,25 +68,34 @@ const App = () => {
             </Layout>
           } 
         />
-        <Route 
-        path="/aayam-club" 
-        element={
-          <Layout>
-            <AayamClub />
-            </Layout>
-          } />
 
-          <Route path="/about-us" element={<AboutUs />} />
-
-        {/* ─── NEW: HIDDEN STAFF PORTAL DASHBOARD ROUTE ─── */}
+        {/* Aayam Club Member Page */}
         <Route 
-          path="/aayam-staff-portal" 
+          path="/aayam-club" 
           element={
             <Layout>
-              <StaffPortal />
+              <AayamClub />
             </Layout>
           } 
         />
+
+        {/* About Us Page */}
+        <Route 
+          path="/about-us" 
+          element={
+            <Layout>
+              <AboutUs />
+            </Layout>
+          } 
+        />
+
+        {/* ─── 🚨 FIXED STAFF PORTAL ROUTE (Without public Header/Footer) ─── */}
+        {/* Management direct open karega: aayamregent.in/aayam-staff-portal */}
+        <Route 
+          path="/aayam-staff-portal" 
+          element={<StaffPortal />} 
+        />
+
       </Routes>
     </Router>
   );

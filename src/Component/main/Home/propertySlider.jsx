@@ -58,7 +58,7 @@ const propertiesData = [
   },
   { 
     id: 7, 
-    img: "https://images.unsplash.com/photo-1590001155093-a3c66ab0c3ff?q=80&w=600", 
+    img: "https://images.unsplash.com/photo-1638904998527-a451c1fbd1cb?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
     title: "Rajasthan (Udaipur)", 
     location: "India", 
     tag: "Royal Signature Suite", 
@@ -67,7 +67,7 @@ const propertiesData = [
   },
   { 
     id: 8, 
-    img: "https://images.unsplash.com/photo-1610641818989-c20250d033b1?q=80&w=600", 
+    img: "https://images.unsplash.com/photo-1663233531386-d3257edf8ff6?q=80&w=1101&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
     title: "Maharashtra", 
     location: "India", 
     tag: "Emerald Riviera Villa", 
@@ -76,7 +76,7 @@ const propertiesData = [
   },
   { 
     id: 9, 
-    img: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=600", 
+    img: "https://images.unsplash.com/photo-1534008897995-27a23e859048?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Dfdfc62?q=80&w=600", 
     title: "Phuket", 
     location: "Thailand", 
     tag: "Whispering Palms Sanctuary", 
@@ -85,7 +85,7 @@ const propertiesData = [
   },
   { 
     id: 10, 
-    img: "https://images.unsplash.com/photo-1502784444187-359ac186c5bb?q=80&w=600", 
+    img: "https://images.unsplash.com/photo-1490997057601-778f6bee9a39?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
     title: "Valais (Zermatt)", 
     location: "Switzerland", 
     tag: "Alpina Crest Chalet", 
