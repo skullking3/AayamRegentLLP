@@ -4,27 +4,45 @@ import { ArrowLeft,ArrowRight } from 'lucide-react';
 const SliderData = [
   {
     id: 1,
-    location: "Thunchan Memorial,",
-    area: "Tirur, Kerala",
+    area: "Kerala",
+    location:"India",
     img: "https://www.keralatourism.org/_next/image/?url=http%3A%2F%2F127.0.0.1%2Fktadmin%2Fimg%2Fpages%2Flarge-desktop%2Fthunchan-memorial-tirur-1742120299_056cbd418bc1b0ba91cd.webp&w=1920&q=75"   
   },
   {
     id: 2,
-    location: "Arambol Beach,",
-    area: "Arambol, Goa",
+    area: "Goa",
+    location:"India",
     img: "https://images.unsplash.com/photo-1652820330085-82a0c2b88d78?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   },
   {
-    id: 3,
-    location: "Dashashwamedh Ghat,",
-    area: "Varanasi, Uttar Pradesh",
+    id:3,
+    area:"Maldives",
+    location:"International",
+    img:"https://images.unsplash.com/photo-1573843981267-be1999ff37cd?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  },
+  {
+    id:4,
+    area:"Switzerland",
+    location:"International",
+    img:"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  },
+  {
+    id: 5,
+    area: "Uttar Pradesh",
+    location:"India",
     img: "https://images.unsplash.com/photo-1571536802807-30451e3955d8?q=80&w=2120&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   },
   {
-    id: 4,
-    location: "Hawa Mahal Road",
-    area:"Jaipur, India",
+    id: 6,
+    area:"Jaipur",
+    location:"India",
     img:"https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  },
+  {
+    id:7,
+    area:"Thailand",
+    location:"International",
+    img :"https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   }
 ];
 
@@ -78,12 +96,13 @@ const MainSlider = () => {
 
        
         <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white z-10 px-4">
+          
+          <h1 className="text-4xl md:text-6xl font-serif text-[#E2B747] font-normal tracking-wide drop-shadow-lg">
+            {currentSlide.area}
+          </h1>
           <p className="text-sm md:text-base uppercase tracking-[0.3em] font-medium mb-1 drop-shadow-md">
             {currentSlide.location}
           </p>
-          <h1 className="text-4xl md:text-6xl font-serif text-[#E2B747] font-normal lowercase tracking-wide drop-shadow-lg">
-            {currentSlide.area}
-          </h1>
         </div>
 
         <button 
@@ -92,14 +111,6 @@ const MainSlider = () => {
         >
           <ArrowRight />
         </button>
-
-        
-        <div className="absolute right-12 bottom-12 hidden md:block z-20">
-          <button className="bg-white/15 backdrop-blur-md border border-white/30 text-white px-6 py-2.5 rounded-full text-xs font-semibold tracking-widest uppercase hover:bg-white/30 transition-all duration-300 flex items-center gap-2">
-            Book Now 
-          </button>
-        </div>
-
       </div>
     </div>
   );
