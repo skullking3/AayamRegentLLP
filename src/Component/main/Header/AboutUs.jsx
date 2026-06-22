@@ -2,7 +2,8 @@ import React from 'react'
 
 const AboutUs = () => {
   return (
-    <div className="w-full min-h-screen bg-black text-white py-16 px-6 flex flex-col items-center justify-center select-none selection:bg-[#E2B747]/30">
+    /* 🚨 FIXED: 'select-none' ko hata kar 'select-text' kiya, ab text desktop aur mobile dono par select ho jayega */
+    <div className="w-full min-h-screen bg-black text-white py-16 px-6 flex flex-col items-center justify-center select-text selection:bg-[#E2B747]/30">
       
       {/* Container Box */}
       <div className="w-full max-w-4xl bg-zinc-950/50 backdrop-blur-xl border border-zinc-900/80 rounded-[2.5rem] p-8 md:p-16 shadow-[0_30px_80px_rgba(0,0,0,0.8)] relative overflow-hidden">
