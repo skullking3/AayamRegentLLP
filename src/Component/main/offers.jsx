@@ -34,48 +34,47 @@ const offersData = [
 
 const OffersSection = () => {
   return (
-    // 1. Main 80vw Dynamic Container with Custom Luxury Shadows
-    <div className="w-[80vw] mx-auto my-20 bg-[linear-gradient(135deg,_#98ee73a3_0%,_#f6f6a3_50%,_#b390f3_100%)] border-2 border-solid border-gray-300 rounded-[2rem] p-8 md:p-12 shadow-[0_30px_70px_rgba(0,0,0,0.12)]]">
+    // 🚨 DESIGN ENHANCEMENT: Changed background to clean premium transparent-dark glassmorphism to fit website theme
+    <div className="w-[85vw] xl:w-[80vw] mx-auto my-20 bg-zinc-950/40 backdrop-blur-md border border-zinc-900 rounded-[2.5rem] p-8 md:p-12 shadow-[0_30px_70px_rgba(0,0,0,0.4)]">
       
-      {/* 2. Top Header Area */}
-      <div className="mb-10 text-center md:text-left">
-        <span className="text-[11px] font-bold tracking-[0.25em] text-[#b58e2a] uppercase block mb-1">
+      {/* Top Header Area */}
+      <div className="mb-12 text-center md:text-left">
+        <span className="text-[10px] font-bold tracking-[0.4em] text-[#E2B747] uppercase block mb-2">
           Handpicked For You
         </span>
-        <h1 className="text-3xl md:text-4xl font-serif text-gray-800 font-normal tracking-wide relative inline-block">
+        <h2 className="text-3xl md:text-4xl font-serif text-white font-normal tracking-wider relative inline-block uppercase">
           Offers
-          {/* Subtle stylish underline decoration */}
-          <span className="absolute bottom-[-6px] left-0 md:left-0 right-0 md:right-auto mx-auto md:mx-0 w-12 h-[2px] bg-[#b58e2a]"></span>
-        </h1>
+          {/* Subtle stylish gold underline decoration */}
+          <span className="absolute bottom-[-8px] left-0 md:left-0 right-0 md:right-auto mx-auto md:mx-0 w-12 h-[2px] bg-[#E2B747]"></span>
+        </h2>
       </div>
 
-      {/* 3. Grid Wrapper for 4 Cards (Responsive Layout) */}
-      {/* Mobile: 1 Column | Tablet: 2 Columns | Large Desktop: 4 Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 justify-items-center ">
+      {/* Grid Wrapper for 4 Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 justify-items-center">
         {offersData.map((item) => (
           
-          // Custom Offer Card inside Loop
+          // Premium Luxury Dark Card Loop
           <div 
             key={item.id} 
-            className="w-full max-w-[320px] h-85 bg-black border border-gray-200/80 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:border-gray-300/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group"
+            className="w-full max-w-[320px] min-h-[360px] bg-zinc-950/90 border border-zinc-900 rounded-2xl p-6 shadow-2xl hover:shadow-[0_0_25px_rgba(226,183,71,0.08)] hover:border-[#E2B747]/40 hover:-translate-y-2 transition-all duration-500 flex flex-col justify-between group cursor-pointer"
           >
             <div>
-              {/* Category Tag */}
-              <p className="text-[9px] uppercase tracking-[0.15em] text-[#b58e2a] font-bold mb-1.5">
+              {/* Category Gold Tag */}
+              <p className="text-[9px] uppercase tracking-[0.2em] text-[#E2B747] font-bold mb-2">
                 {item.tag}
               </p>
               {/* Card Title */}
-              <h3 className="text-xl font-serif text-white font-normal group-hover:text-[#b58e2a] transition-colors duration-200">
+              <h3 className="text-xl font-serif text-white font-normal group-hover:text-[#E2B747] transition-colors duration-300 tracking-wide">
                 {item.title}
               </h3>
               {/* Card Description */}
-              <p className="text-xs text-gray-500 mt-2.5 leading-relaxed font-light">
+              <p className="text-xs text-gray-400 mt-3 leading-relaxed font-light">
                 {item.desc}
               </p>
             </div>
 
-            {/* Card Action Button */}
-            <button className="w-full bg-gray-900 text-white text-[10px] font-semibold tracking-widest uppercase py-3 rounded-xl hover:bg-[#b58e2a] shadow-sm hover:shadow-md transition-all duration-300 mt-4">
+            {/* Card Action Button fitted with Theme Colors */}
+            <button className="w-full bg-zinc-900 text-white text-[10px] font-bold tracking-widest uppercase py-3.5 rounded-xl border border-zinc-800 hover:bg-[#E2B747] hover:text-black hover:border-transparent transition-all duration-300 mt-6">
               {item.btnText}
             </button>
           </div>

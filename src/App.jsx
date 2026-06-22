@@ -4,7 +4,13 @@ import Head from './Component/Header.jsx';
 import Main from './Component/Main.jsx';
 import Footer from './Component/Footer.jsx';
 import StaffLogin from './Component/main/Login/StaffLogin.jsx';
-import UserLogin from './Component/main/Login/UserLogin.jsx'; // 👈 1. Naya Dual Auth Component Import kiya
+import UserLogin from './Component/main/Login/UserLogin.jsx'; 
+
+// ─── NEW COMPONENT IMPORTS ───
+import Location from './Component/main/Header/Location.jsx'; // 👈 Destination page ke liye
+import StaffPortal from './Component/main/Staff/StaffPortal.jsx'; // 👈 Staff dashboard panel ke liye
+import AayamClub from './Component/main/Header/AayamClub.jsx';
+import AboutUs from './Component/main/Header/AboutUs.jsx'
 
 const Layout = ({ children }) => {
   return (
@@ -32,7 +38,17 @@ const App = () => {
           } 
         />
         
-        {/* ─── 2. USER LOGIN / REGISTRATION ROUTE ─── */}
+        {/* ─── NEW: DESTINATIONS COMPONENT ROUTE ─── */}
+        <Route 
+          path="/destinations" 
+          element={
+            <Layout>
+              <Location />
+            </Layout>
+          } 
+        />
+        
+        {/* USER LOGIN ROUTE (Only Login, No Registration) */}
         <Route 
           path="/login" 
           element={
@@ -42,12 +58,31 @@ const App = () => {
           } 
         />
         
-        {/* Staff Login Portal Route */}
+        {/* Staff Secret Login Page Route */}
         <Route 
           path="/staff-login" 
           element={
             <Layout>
               <StaffLogin />
+            </Layout>
+          } 
+        />
+        <Route 
+        path="/aayam-club" 
+        element={
+          <Layout>
+            <AayamClub />
+            </Layout>
+          } />
+
+          <Route path="/about-us" element={<AboutUs />} />
+
+        {/* ─── NEW: HIDDEN STAFF PORTAL DASHBOARD ROUTE ─── */}
+        <Route 
+          path="/aayam-staff-portal" 
+          element={
+            <Layout>
+              <StaffPortal />
             </Layout>
           } 
         />
