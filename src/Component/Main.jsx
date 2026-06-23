@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom'; // 👈 React Router se location track karne ke liye import kiya
 import Slider from './main/Home/MainSlider.jsx'
-import Bar from "./main/Home/BookingBar.jsx"
+import Bar from "./main/bookingBar/BookingBar.jsx"
 import Offers from "./main/Home/offers.jsx"
 import Property from "./main/Home/propertySlider.jsx"
 import Features from './main/Home/Features.jsx'

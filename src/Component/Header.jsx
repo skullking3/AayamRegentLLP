@@ -13,7 +13,8 @@ const Header = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/public/notifications');
+        // const response = await fetch('http://localhost:8080/api/public/notifications');
+        const response = await fetch('');
         if (response.ok) {
           const data = await response.json();
           setNotifications(data);

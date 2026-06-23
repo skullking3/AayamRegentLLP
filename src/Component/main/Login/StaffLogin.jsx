@@ -1,33 +1,67 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const StaffLogin = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ username: '', password: '' }); 
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(''); 
+  
+  const navigate = useNavigate(); 
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setLoading(true); // 👈 FIXED: Ab ye breakdown nahi karega, proper state function hai
+    setErrorMessage(''); 
     
-    // Spring Boot Rest API integration endpoint point
     console.log("Submitting Auth Credentials directly to Spring Boot Service Context:", formData);
     
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  };
+    try {
+      // 📡 Spring Boot Endpoint Integration (Default Port: 8080)
+      const response = await fetch('http://localhost:8080/api/staff/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: formData.username, // 👈 Backend matching key 'username'
+          password: formData.password
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok && data.success) { 
+              // 1. Save Data
+              localStorage.setItem('staffToken', data.username); 
+              localStorage.setItem('staffRole', data.role);
+              localStorage.setItem('staffName', data.username);
+              
+              // 2. Role Based Redirection Logic
+              if (data.role === 'SuperAdmin') {
+                navigate('/admin');
+              } else if (data.role === 'Manager') {
+                navigate('/manager');
+              } else {
+                // Agar koi aur role ho, toh default portal
+                navigate('/Emp');
+              }
+            } else {
+              setErrorMessage(data.message || 'Unauthorized Gateway! Invalid Username or Password.');
+            }
+          } catch (error) {
+            setErrorMessage('Network Connection Refused! Make sure Spring Boot Server is running.');
+          } finally {
+            setLoading(false);
+          }
+        };
 
   return (
-    /* 👉 GLOW CORRECTION: Is container ko layout content area ke hisab se width aur dynamic bounds diye hain 
-      taaki global background transparent hone par yeh gradient bina kisi conflict ke complete render ho.
-    */
     <div className="w-full min-h-[calc(100vh-140px)] bg-black flex items-center justify-center font-sans px-4 py-12 relative overflow-hidden select-none">
       
       {/* Background Luxury Ambient Glow Orbs */}
@@ -53,25 +87,25 @@ const StaffLogin = () => {
         {/* Input Interactive Fields Form Area */}
         <form onSubmit={handleSubmit} className="space-y-6">
           
-          {/* Email Custom Field Input System */}
+          {/* USERNAME / ID FIELD SYSTEM */}
           <div className="relative group">
             <label className="text-[10px] font-semibold tracking-widest text-gray-400 uppercase block mb-2 group-focus-within:text-[#E2B747] transition-colors">
-              Staff Email Address
+              Username
             </label>
             <div className="relative h-12">
               <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500 group-focus-within:text-[#E2B747] transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                 </svg>
               </span>
               <input 
-                type="email"
-                name="email"
+                type="text" 
+                name="username" 
                 required
                 autoComplete="username"
-                value={formData.email}
+                value={formData.username}
                 onChange={handleInputChange}
-                placeholder="name@aayamregent.com"
+                placeholder="Enter your hotel username" 
                 className="w-full h-full pl-11 pr-4 rounded-xl bg-zinc-950/90 border border-zinc-800/80 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#E2B747] focus:shadow-[0_0_15px_rgba(226,183,71,0.05)] transition-all duration-300 font-light"
               />
             </div>
@@ -106,7 +140,7 @@ const StaffLogin = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-white transition-colors"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-red-900 transition-colors"
               >
                 {showPassword ? (
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-4 h-4">
@@ -142,6 +176,13 @@ const StaffLogin = () => {
             </label>
           </div>
 
+          {/* LIVE ERROR CONTAINER */}
+          {errorMessage && (
+            <div className="p-3 rounded-xl bg-red-950/20 border border-red-900/50 text-red-400 text-xs text-center font-light tracking-wide animate-pulse">
+              {errorMessage}
+            </div>
+          )}
+
           {/* Verification Call To Action Master Submit Button */}
           <button
             type="submit"
@@ -150,7 +191,7 @@ const StaffLogin = () => {
           >
             {loading ? (
               <>
-                <svg className="animate-spin h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-4 w-4 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>

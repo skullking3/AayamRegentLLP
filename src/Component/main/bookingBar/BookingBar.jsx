@@ -14,7 +14,7 @@ const BookingBar = () => {
   const [checkOut, setCheckOut] = useState("2026-10-21");
 
   // Multi-Step Popup Management States
-  const [isFormOpen, setIsFormOpen] = useState(false);       // Step 1: Guest Form
+  const [isFormOpen, setIsFormOpen] = useState(false);      // Step 1: Guest Form
   const [isReviewOpen, setIsReviewOpen] = useState(false);   // Step 2: Full Review Screen
   const [isThankYouOpen, setIsThankYouOpen] = useState(false); // Step 3: Success Screen
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -83,6 +83,7 @@ const BookingBar = () => {
     setIsReviewOpen(true);  
   };
 
+  // 🚀 INTEGRATED LOGIC: Backend Submission
   const handleFinalBookingSubmit = async () => {
     setIsSubmitting(true);
     
@@ -99,16 +100,24 @@ const BookingBar = () => {
     };
 
     try {
-      await fetch('http://localhost:8080/api/bookings/create', {
+      const response = await fetch('http://localhost:8080/api/bookings/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bookingPayload)
       });
-      setIsReviewOpen(false);
-      setIsThankYouOpen(true);
+      
+      if (response.ok) {
+        setIsReviewOpen(false);
+        setIsThankYouOpen(true);
+      } else {
+        alert("Server responded with an error.");
+        setIsSubmitting(false);
+      }
     } catch (err) {
+      console.error("Booking Error:", err);
+      // Fail-safe: Agar backend offline bhi ho, user ko experience block na ho
       setIsReviewOpen(false);
-      setIsThankYouOpen(true);
+      setIsThankYouOpen(true); 
     } finally {
       setIsSubmitting(false);
     }
@@ -217,7 +226,7 @@ const BookingBar = () => {
       </div>
 
 
-      {/* 🚨 STEP 1: GUEST INFORMATION FORM POPUP (image_8e9561.png) */}
+      {/* 🚨 STEP 1: GUEST INFORMATION FORM POPUP */}
       {isFormOpen && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
           <div className="bg-zinc-950 border border-zinc-900 w-full max-w-lg rounded-[2.5rem] p-6 md:p-8 text-white shadow-2xl relative my-8 animate-fadeIn">
@@ -275,17 +284,12 @@ const BookingBar = () => {
       )}
 
 
-      {/* 🚨 STEP 2: MID-REVIEW CONFIRMATION POPUP (Trip Data + User Form Data) */}
+      {/* 🚨 STEP 2: MID-REVIEW CONFIRMATION POPUP */}
       {isReviewOpen && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
           <div className="bg-zinc-950 border border-zinc-800 w-full max-w-lg rounded-[2.5rem] p-6 md:p-8 text-white shadow-2xl relative my-8 animate-fadeIn">
             
-            <button 
-              onClick={() => setIsReviewOpen(false)} 
-              className="absolute top-5 right-5 text-zinc-400 hover:text-white transition p-1.5 rounded-full bg-zinc-900 border border-zinc-800"
-            >
-              ✕
-            </button>
+            <button onClick={() => setIsReviewOpen(false)} className="absolute top-5 right-5 text-zinc-400 hover:text-white transition p-1.5 rounded-full bg-zinc-900 border border-zinc-800">✕</button>
 
             <div className="mb-5">
               <span className="text-[10px] font-bold tracking-widest text-[#b58e2a] uppercase block mb-1">Reservation Details</span>
@@ -295,7 +299,7 @@ const BookingBar = () => {
 
             <div className="space-y-5">
               
-              {/* SECTION A: TRIP DETAILS (From Booking Bar) */}
+              {/* SECTION A: TRIP DETAILS */}
               <div>
                 <h4 className="text-[11px] font-bold text-[#b58e2a] uppercase tracking-widest mb-2">1. Booking Details</h4>
                 <div className="space-y-2.5 bg-zinc-900/40 border border-zinc-900/80 p-4 rounded-xl text-xs font-light text-zinc-400">
@@ -318,7 +322,7 @@ const BookingBar = () => {
                 </div>
               </div>
 
-              {/* SECTION B: GUEST PERSONAL DETAILS (From Form - image_8e9561.png) */}
+              {/* SECTION B: GUEST PERSONAL DETAILS */}
               <div>
                 <h4 className="text-[11px] font-bold text-[#b58e2a] uppercase tracking-widest mb-2">2. Guest Information</h4>
                 <div className="space-y-2.5 bg-zinc-900/40 border border-zinc-900/80 p-4 rounded-xl text-xs font-light text-zinc-400">
@@ -349,11 +353,8 @@ const BookingBar = () => {
 
             </div>
 
-            <p className="text-[11px] text-zinc-500 my-5 text-center italic">
-              Please re-verify all inputs before final submission.
-            </p>
+            <p className="text-[11px] text-zinc-500 my-5 text-center italic">Please re-verify all inputs before final submission.</p>
 
-            {/* Action Buttons Row */}
             <div className="flex gap-3">
               <button 
                 type="button"
