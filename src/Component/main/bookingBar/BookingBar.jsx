@@ -100,7 +100,7 @@ const BookingBar = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/api/bookings/create', {
+      const response = await fetch('https://aayamregentbackend.onrender.com/api/bookings/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bookingPayload)

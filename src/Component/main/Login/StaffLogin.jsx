@@ -24,7 +24,7 @@ const StaffLogin = () => {
     
     try {
       // 📡 Spring Boot Endpoint Integration (Default Port: 8080)
-      const response = await fetch('http://localhost:8080/api/staff/login', {
+      const response = await fetch('https://aayamregentbackend.onrender.com/api/staff/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
