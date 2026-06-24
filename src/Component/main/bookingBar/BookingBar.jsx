@@ -100,9 +100,13 @@ const BookingBar = () => {
     };
 
     try {
-      const response = await fetch('https://aayamregentbackend.onrender.com/api/bookings/create', {
+      const API_URL = import.meta.env.VITE_API_URL; // .env se URL fetch kar rahe hain
+
+      const response = await fetch(`${API_URL}/api/bookings/create`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json' 
+        },
         body: JSON.stringify(bookingPayload)
       });
       

@@ -16,50 +16,39 @@ const StaffLogin = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true); // 👈 FIXED: Ab ye breakdown nahi karega, proper state function hai
-    setErrorMessage(''); 
-    
-    console.log("Submitting Auth Credentials directly to Spring Boot Service Context:", formData);
-    
-    try {
-      // 📡 Spring Boot Endpoint Integration (Default Port: 8080)
-      const response = await fetch('https://aayamregentbackend.onrender.com/api/staff/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: formData.username, // 👈 Backend matching key 'username'
-          password: formData.password
-        }),
-      });
+  e.preventDefault();
+  setLoading(true);
+  setErrorMessage('');
+  
+  try {
+    const API_URL = import.meta.env.VITE_API_URL; 
+    const response = await fetch(`${API_URL}/api/staff/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: formData.username,
+        password: formData.password
+      }),
+    });
 
-      const data = await response.json();
-      if (response.ok && data.success) { 
-              // 1. Save Data
-              localStorage.setItem('staffToken', data.username); 
-              localStorage.setItem('staffRole', data.role);
-              localStorage.setItem('staffName', data.username);
-              
-              // 2. Role Based Redirection Logic
-              if (data.role === 'SuperAdmin') {
-                navigate('/admin');
-              } else if (data.role === 'Manager') {
-                navigate('/manager');
-              } else {
-                // Agar koi aur role ho, toh default portal
-                navigate('/Emp');
-              }
-            } else {
-              setErrorMessage(data.message || 'Unauthorized Gateway! Invalid Username or Password.');
-            }
-          } catch (error) {
-            setErrorMessage('Network Connection Refused! Make sure Spring Boot Server is running.');
-          } finally {
-            setLoading(false);
-          }
-        };
+    const data = await response.json();
+    
+    if (response.ok && data.success) { 
+        // 1. Role aur User Data set karo (Dashboard.jsx ke liye ye zaroori hai)
+        localStorage.setItem('staffRole', data.role); // Role: SuperAdmin, Manager, etc.
+        localStorage.setItem('user', JSON.stringify({ name: data.username }));
+        
+        // 2. SABKO ek hi dashboard par bhejo
+        navigate('/dashboard'); 
+    } else {
+        setErrorMessage(data.message || 'Unauthorized Gateway! Invalid Credentials.');
+    }
+  } catch (error) {
+    setErrorMessage('Network Connection Refused! Make sure Spring Boot Server is running.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="w-full min-h-[calc(100vh-140px)] bg-black flex items-center justify-center font-sans px-4 py-12 relative overflow-hidden select-none">
