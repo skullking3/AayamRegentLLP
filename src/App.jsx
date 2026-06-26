@@ -13,14 +13,14 @@ import AboutUs from './Component/main/Header/AboutUs.jsx';
 
 // Protected Components
 import Dashboard from './Component/main/Staff/Dashboard.jsx';
-import ManagerDashboard from './Component/main/Staff/MangerDashbord.jsx';
-import Emp from './Component/main/Staff/Emp.jsx';
-import ProtectedRoute from './Component/main/Staff/ProtectedRoute.jsx';
+import ProtectedRoute from './Component/main/Security/ProtectedRoute.jsx';
 
 // Management Components
 import BookingTable from './Component/main/Management/BookingTable.jsx';
 import MemeberRegistration from './Component/main/Management/Member_registration.jsx';
 import MemeberDetailed from './Component/main/Management/Member_detailed.jsx';
+import EmpFrom from './Component/main/Management/EmplyeeFrom.jsx'
+import EmpDetail from './Component/main/Management/EmpDetail.jsx'
 
 // Layout Wrappers
 const Layout = ({ children }) => (
@@ -60,8 +60,8 @@ const App = () => {
           <Route path="detail-member" element={<MemeberDetailed />} />
           {/* Tumhare specific dashboards ko bhi yahan la sakte ho */}
           <Route path="admin-home" element={<Dashboard />} />
-          <Route path="manager-home" element={<ManagerDashboard />} />
-          <Route path="emp-home" element={<Emp />} />
+          <Route path="EmpForm" element={<EmpFrom />} />
+          <Route path="EmpDetail" element={<EmpDetail />} />
         </Route>
       </Routes>
     </Router>

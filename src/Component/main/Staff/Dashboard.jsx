@@ -26,12 +26,12 @@ const handleLogout = () => {
     window.location.href = '/staff-login'; 
 };
   const navItems = [
-    { name: 'User Booking', path: 'bookingTable', allowed: ['SuperAdmin', 'Manager', 'Employee'] },
-    { name: 'Member Booking', path: 'members', allowed: ['SuperAdmin', 'Manager'] },
+    { name: 'User Booking', path: 'bookingTable', allowed: ['SuperAdmin', 'Manager', 'Employee','Oprator'] },
+    { name: 'Member Booking', path: 'members', allowed: ['SuperAdmin', 'Manager','Employee','Oprator'] },
     { name: 'Create Member', path: 'create-member', allowed: ['SuperAdmin', 'Manager'] },
-    { name: 'Members Detailed', path: 'detail-member', allowed: ['SuperAdmin', 'Manager', 'Employee'] },
-    { name: 'Staff Management', path: 'staff-manage', allowed: ['SuperAdmin'] },
-    { name: 'Staff Detailed', path: 'staff-detailed', allowed: ['SuperAdmin', 'Manager'] },
+    { name: 'Members Detailed', path: 'detail-member', allowed: ['SuperAdmin', 'Manager', 'Employee','Employee','Oprator'] },
+    { name: 'Staff Management', path: 'EmpForm', allowed: ['SuperAdmin'] },
+    { name: 'Staff Detailed', path: 'EmpDetail', allowed: ['SuperAdmin'] },
     { name: 'Settings', path: 'settings', allowed: ['SuperAdmin'] },
   ];
 
