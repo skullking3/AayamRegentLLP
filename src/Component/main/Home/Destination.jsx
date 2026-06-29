@@ -88,7 +88,7 @@ const Destination = () => {
 
           <div className="mt-10 relative z-10">
             <Link 
-              to="/about-us"
+              to="/about"
               className="inline-block px-8 py-3.5 bg-white text-black text-xs font-semibold tracking-widest uppercase rounded-xl hover:bg-[#E2B747] hover:text-black hover:shadow-[0_10px_30px_rgba(226,183,71,0.3)] transition-all duration-300 transform hover:-translate-y-0.5"
             >
               About Aayam
