@@ -32,7 +32,9 @@ const handleLogout = () => {
     { name: 'Members Detailed', path: 'detail-member', allowed: ['SuperAdmin', 'Manager', 'Employee','Employee','Oprator'] },
     { name: 'Staff Management', path: 'EmpForm', allowed: ['SuperAdmin'] },
     { name: 'Staff Detailed', path: 'EmpDetail', allowed: ['SuperAdmin'] },
-    { name: 'Settings', path: 'settings', allowed: ['SuperAdmin'] },
+    { name: 'Notification Setting', path: 'NotiHandler', allowed: ['SuperAdmin','Manager','Employee','Oprator'] },
+    { name: 'Offers Setting', path: 'OffersHandler', allowed: ['SuperAdmin','Manager','Employee','Oprator'] },
+    { name: 'Club Setting', path: 'ClubHandler', allowed: ['SuperAdmin','Manager','Employee','Oprator'] },
   ];
 
   return (
