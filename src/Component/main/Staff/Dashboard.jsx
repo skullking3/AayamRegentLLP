@@ -41,7 +41,7 @@ const handleLogout = () => {
     <div className="flex min-h-screen bg-black text-white">
       {/* Sidebar - flex flex-col add kiya taaki Logout niche rahe */}
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-black border-r border-zinc-800 p-6 flex flex-col transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 ease-in-out`}>
-        <h2 className="text-[#E2B747] font-serif text-xl mb-8">Aayam Admin</h2>
+        <h2 className="text-[#E2B747] font-serif text-xl mb-8">Aayam Regent Dashboard</h2>
         
         <nav className="flex-1 space-y-4" onClick={() => setIsSidebarOpen(false)}>
           {navItems

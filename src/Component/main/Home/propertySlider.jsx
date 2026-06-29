@@ -237,10 +237,6 @@ const PropertySlider = () => {
                       {item.tag}
                     </span>
                   </div>
-                  
-                  <button className="text-xs font-bold text-[#b58e2a] tracking-wider uppercase group-hover:translate-x-1 transition-transform duration-300 flex items-center gap-0.5 shrink-0">
-                    Explore <span>→</span>
-                  </button>
                 </div>
 
               </div>

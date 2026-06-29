@@ -140,7 +140,7 @@ const BookingBar = () => {
         
         {/* Destination Search Box */}
         <div ref={suggestionRef} className="relative flex-1 w-full border-b sm:border-b-0 sm:border-r border-gray-300/60 pb-3 sm:pb-0">
-          <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1">Where To?</p>
+          <p className="text-[10px] uppercase tracking-widest text-gray-800 font-bold mb-1">Where To?</p>
           <div className="flex items-center justify-between pr-3">
             <input 
               type="text"
@@ -151,7 +151,7 @@ const BookingBar = () => {
               }}
               onFocus={() => setShowSuggestions(true)}
               placeholder="Search destination (e.g. Delhi, Goa)..."
-              className="bg-transparent text-gray-800 font-semibold text-sm focus:outline-none w-full placeholder-gray-400"
+              className="bg-transparent text-gray-800 font-semibold text-sm focus:outline-none w-full placeholder-gray"
             />
             {isLoading && (
               <div className="w-4 h-4 border-2 border-[#b58e2a] border-t-transparent rounded-full animate-spin"></div>
@@ -178,18 +178,18 @@ const BookingBar = () => {
         {/* Check-In / Check-Out */}
         <div className="flex-1 w-full flex gap-4 border-b sm:border-b-0 sm:border-r border-gray-300/60 pb-3 sm:pb-0">
           <div className="w-1/2">
-            <label className="text-[10px] uppercase tracking-widest text-gray-500 font-bold block mb-1">Check-In</label>
+            <label className="text-[10px] uppercase tracking-widest text-gray-800 font-bold block mb-1">Check-In</label>
             <input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} className="bg-transparent text-gray-800 font-semibold text-sm focus:outline-none w-full cursor-pointer" />
           </div>
           <div className="w-1/2">
-            <label className="text-[10px] uppercase tracking-widest text-gray-500 font-bold block mb-1">Check-Out</label>
+            <label className="text-[10px] uppercase tracking-widest text-gray-800 font-bold block mb-1">Check-Out</label>
             <input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} className="bg-transparent text-gray-800 font-semibold text-sm focus:outline-none w-full cursor-pointer" />
           </div>
         </div>
 
         {/* Counter System */}
         <div className="relative flex-1 w-full border-b sm:border-b-0 pb-3 sm:pb-0 cursor-pointer" onClick={() => { setShowGuests(!showGuests); setShowSuggestions(false); }}>
-          <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1">Guests</p>
+          <p className="text-[10px] uppercase tracking-widest text-gray-800 font-bold mb-1">Guests</p>
           <div className="flex items-center justify-between pr-3">
             <span className="text-gray-800 font-semibold text-sm">{guests.adults} Adults, {guests.children} Child</span>
             <span className="text-xs text-[#b58e2a]">▼</span>

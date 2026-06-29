@@ -10,6 +10,8 @@ import UserLogin from './Component/main/Login/UserLogin.jsx';
 import Location from './Component/main/Header/Location.jsx'; 
 import AayamClub from './Component/main/Header/AayamClub.jsx';
 import AboutUs from './Component/main/Header/AboutUs.jsx';
+import AboutAayam from './Component/main/Home/AboutAayam.jsx';
+import BookOrder from './Component/main/bookingBar/bookOrder.jsx';
 
 // Protected Components
 import Dashboard from './Component/main/Staff/Dashboard.jsx';
@@ -24,6 +26,7 @@ import EmpDetail from './Component/main/Management/EmpDetail.jsx'
 import NotiHandler from './Component/main/Management/NotiHandler.jsx';
 import OffersHandler from './Component/main/Management/OffersHandler.jsx';
 import ClubHandler from './Component/main/Management/ClubHandler.jsx';
+
 
 // Layout Wrappers
 const Layout = ({ children }) => (
@@ -51,6 +54,8 @@ const App = () => {
         <Route path="/staff-login" element={<Layout><StaffLogin /></Layout>} />
         <Route path="/aayam-club" element={<Layout><AayamClub /></Layout>} />
         <Route path="/about-us" element={<Layout><AboutUs /></Layout>} />
+        <Route path="/about" element={<Layout><AboutAayam /></Layout>} />
+        <Route path="/bookOrder" element={<Layout><BookOrder /></Layout>} />
         
 
         {/* --- CENTRALIZED DASHBOARD (Role-Based Access) --- */}
