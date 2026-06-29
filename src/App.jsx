@@ -21,6 +21,9 @@ import MemeberRegistration from './Component/main/Management/Member_registration
 import MemeberDetailed from './Component/main/Management/Member_detailed.jsx';
 import EmpFrom from './Component/main/Management/EmplyeeFrom.jsx'
 import EmpDetail from './Component/main/Management/EmpDetail.jsx'
+import NotiHandler from './Component/main/Management/NotiHandler.jsx';
+import OffersHandler from './Component/main/Management/OffersHandler.jsx';
+import ClubHandler from './Component/main/Management/ClubHandler.jsx';
 
 // Layout Wrappers
 const Layout = ({ children }) => (
@@ -46,7 +49,9 @@ const App = () => {
         <Route path="/destinations" element={<Layout><Location /></Layout>} />
         <Route path="/login" element={<Layout><UserLogin /></Layout>} />
         <Route path="/staff-login" element={<Layout><StaffLogin /></Layout>} />
-        {/* ... baaki public routes ... */}
+        <Route path="/aayam-club" element={<Layout><AayamClub /></Layout>} />
+        <Route path="/about-us" element={<Layout><AboutUs /></Layout>} />
+        
 
         {/* --- CENTRALIZED DASHBOARD (Role-Based Access) --- */}
         <Route path="/dashboard" element={
@@ -62,6 +67,9 @@ const App = () => {
           <Route path="admin-home" element={<Dashboard />} />
           <Route path="EmpForm" element={<EmpFrom />} />
           <Route path="EmpDetail" element={<EmpDetail />} />
+          <Route path="NotiHandler" element={<NotiHandler/>}/>
+          <Route path='OffersHandler' element={<OffersHandler/>}/>
+          <Route path='ClubHandler' element={<ClubHandler/>}/>
         </Route>
       </Routes>
     </Router>
