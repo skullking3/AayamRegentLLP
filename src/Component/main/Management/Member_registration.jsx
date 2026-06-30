@@ -3,18 +3,63 @@ import React, { useState } from 'react';
 const Member_registration = () => {
     const [formData, setFormData] = useState({
         name: '', email: '', password: '', phone: '',
-        dob: '', address: '', pinCode: '', identityNo: ''
+        dob: '', address: '', pinCode: '', identityNo: '',
+        agreementUrl: ''
     });
     const [showPassword, setShowPassword] = useState(false);
+    const [uploading, setUploading] = useState(false); 
+
+    const BASE_URL = import.meta.env.VITE_API_URL;
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+   
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        
+        if (file.type !== "application/pdf") {
+            alert("Bhai, sirf PDF format allowed hai!");
+            e.target.value = "";
+            return;
+        }
+
+        const dataPayload = new FormData();
+        dataPayload.append("file", file); 
+
+        try {
+            setUploading(true);
+            
+         
+            const uploadResponse = await fetch(`${BASE_URL}/api/documents/upload`, {
+                method: 'POST',
+                body: dataPayload
+            });
+
+            if (!uploadResponse.ok) throw new Error("Cloud asset storage pipeline rejected.");
+            
+            const resultData = await uploadResponse.json();
+            const supabasePublicUrl = resultData.url;
+
+            if (supabasePublicUrl) {
+                // Updating target form reference context with the generated link
+                setFormData(prev => ({ ...prev, agreementUrl: supabasePublicUrl }));
+                alert("Mubarak ho! Document cloud me save ho gaya aur form se link ho chuka hai.");
+            }
+        } catch (error) {
+            console.error("Asset Sync Mismatch Error Trace:", error);
+            alert("Pipeline server integration error! Live console stream check karein.");
+        } finally {
+            setUploading(false);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const BASE_URL = import.meta.env.VITE_API_URL;
             
             const response = await fetch(`${BASE_URL}/api/auth/register`, {
                 method: 'POST',
@@ -23,8 +68,12 @@ const Member_registration = () => {
             });
 
             if (response.ok) {
-                alert("Registration Successful!");
-                setFormData({ name: '', email: '', password: '', phone: '', dob: '', address: '', pinCode: '', identityNo: '' });
+                alert("Registration Successful with Signed Agreement Asset!");
+                setFormData({ 
+                    name: '', email: '', password: '', phone: '', 
+                    dob: '', address: '', pinCode: '', identityNo: '', 
+                    agreementUrl: '' 
+                });
                 e.target.reset();
             } else {
                 const errorText = await response.text();
@@ -37,7 +86,7 @@ const Member_registration = () => {
     };
 
     return (
-        <div className="min-h-screen bg-zinc-900 flex items-center justify-center p-3 sm:p-6 md:p-8 box-border">
+        <div className="min-h-screen bg-zinc-900 flex items-center justify-center p-3 sm:p-6 md:p-8 box-border select-none">
             {/* Premium Glassmorphic Outer Card */}
             <div className="bg-black p-4 sm:p-6 md:p-8 rounded-2xl shadow-2xl border border-zinc-800 w-full max-w-2xl box-border">
                 
@@ -45,7 +94,7 @@ const Member_registration = () => {
                     <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white uppercase tracking-wider">
                         Member Registration
                     </h2>
-                    <p className="text-xs sm:text-sm text-zinc-500 mt-1">Create a secure system user account</p>
+                    <p className="text-xs sm:text-sm text-zinc-500 mt-1">Create a secure system user account with signed policy infrastructure</p>
                 </div>
                 
                 <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
@@ -60,7 +109,7 @@ const Member_registration = () => {
                                 type="text"
                                 autoComplete="name"
                                 value={formData.name}
-                                placeholder="Ramesh Kumar" 
+                                placeholder="Full Name" 
                                 onChange={handleChange} 
                                 className="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-white focus:border-[#E2B747] outline-none transition-all box-border text-sm sm:text-base" 
                                 required 
@@ -75,7 +124,7 @@ const Member_registration = () => {
                                 type="email" 
                                 autoComplete="email"
                                 value={formData.email}
-                                placeholder="dash@mail.com" 
+                                placeholder="New@gmail.com" 
                                 onChange={handleChange} 
                                 className="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-white focus:border-[#E2B747] outline-none transition-all box-border text-sm sm:text-base" 
                                 required 
@@ -114,14 +163,14 @@ const Member_registration = () => {
                                 type="tel"
                                 autoComplete="tel"
                                 value={formData.phone}
-                                placeholder="874594113" 
+                                placeholder="+91 9876543210" 
                                 onChange={handleChange} 
                                 className="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-white focus:border-[#E2B747] outline-none transition-all box-border text-sm sm:text-base" 
                                 required 
                             />
                         </div>
 
-                        {/* Date of Birth - Premium Permanent Phone Fix */}
+                        {/* Date of Birth */}
                         <div className="w-full">
                             <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-1">Date of Birth</label>
                             <input 
@@ -143,7 +192,7 @@ const Member_registration = () => {
                                 inputMode="numeric"
                                 autoComplete="postal-code"
                                 value={formData.pinCode}
-                                placeholder="512411" 
+                                placeholder="112233" 
                                 onChange={handleChange} 
                                 className="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-white focus:border-[#E2B747] outline-none transition-all box-border text-sm sm:text-base" 
                                 required 
@@ -158,7 +207,7 @@ const Member_registration = () => {
                                 type="text"
                                 autoComplete="username"
                                 value={formData.identityNo}
-                                placeholder="1124441211544" 
+                                placeholder="Enter Identity No." 
                                 onChange={handleChange} 
                                 className="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-white focus:border-[#E2B747] outline-none transition-all box-border text-sm sm:text-base" 
                                 required 
@@ -180,13 +229,42 @@ const Member_registration = () => {
                             />
                         </div>
 
+                        <div className="w-full sm:col-span-2">
+                            <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-1">
+                                Upload Legal Digital Agreement (PDF Format)
+                            </label>
+                            <div className="relative w-full flex items-center justify-between gap-3 bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-white focus-within:border-[#E2B747] transition-all box-border">
+                                <label className="bg-zinc-800 hover:bg-zinc-700 active:scale-95 text-white text-xs px-4 py-2 font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap">
+                                    {uploading ? "Uploading..." : "📁 Choose PDF"}
+                                    <input 
+                                        type="file" 
+                                        accept=".pdf" 
+                                        onChange={handleFileChange} 
+                                        disabled={uploading} 
+                                        className="hidden" 
+                                    />
+                                </label>
+                                
+                                <div className="text-xs font-mono text-zinc-500 truncate pr-2 max-w-[70%]">
+                                    {formData.agreementUrl ? (
+                                        <span className="text-emerald-400 font-bold truncate block">
+                                            🟢 Linked: {formData.agreementUrl}
+                                        </span>
+                                    ) : (
+                                        <span>No file stream registered yet</span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     
                     {/* Submit Button */}
                     <div className="pt-2">
                         <button 
                             type="submit" 
-                            className="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] text-white p-3.5 rounded-xl font-bold tracking-wide shadow-lg transition-all text-sm sm:text-base cursor-pointer"
+                            disabled={uploading}
+                            className={`w-full ${uploading ? 'bg-zinc-700 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'} active:scale-[0.99] text-white p-3.5 rounded-xl font-bold tracking-wide shadow-lg transition-all text-sm sm:text-base cursor-pointer`}
                         >
                             Create Account
                         </button>

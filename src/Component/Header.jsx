@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom' 
 import logo from '../assets/Logo.png'
+import AgreementModal from './main/Login/AggrementModel.jsx' 
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showNotif, setShowNotif] = useState(false); 
   const [notifications, setNotifications] = useState([]); 
   const [user, setUser] = useState(null); 
+  
+  const [showUserSidebar, setShowUserSidebar] = useState(false);
+  const [showAgreementModal, setShowAgreementModal] = useState(false); // Controlled visibility state
+  const sidebarRef = useRef(null);
 
   const navigate = useNavigate();
   const location = useLocation();
   const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
-  // Function to sync auth state from localstorage
   const syncAuthState = () => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -27,16 +31,10 @@ const Header = () => {
   };
 
   useEffect(() => {
-    // 1. Initial execution on mount
     syncAuthState();
-
-    // 2. Dynamic Live Storage Event: Jab dusre components storage badlenge (bina reload ke updates)
     window.addEventListener('storage', syncAuthState);
-    
-    // Custom trigger handler taaki same-window login events instantly capture ho ske
     window.addEventListener('authChange', syncAuthState);
 
-    // 3. Notifications Polling Setup
     const fetchNotifications = async () => {
       try {
         const response = await fetch(`${BASE_URL}/api/public/notifications`);
@@ -55,7 +53,6 @@ const Header = () => {
     fetchNotifications();
     const intervalId = setInterval(fetchNotifications, 30000);
 
-    // Cleanup listeners
     return () => {
       clearInterval(intervalId);
       window.removeEventListener('storage', syncAuthState);
@@ -63,11 +60,23 @@ const Header = () => {
     };
   }, [BASE_URL]);
 
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+        setShowUserSidebar(false);
+      }
+    };
+    if (showUserSidebar) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    }
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, [showUserSidebar]);
+
   const handleLogout = () => {
     localStorage.removeItem('user');
     setUser(null);
     setIsOpen(false);
-    // Notify other components if needed
+    setShowUserSidebar(false); 
     window.dispatchEvent(new Event('authChange'));
     navigate('/');
   };
@@ -98,8 +107,7 @@ const Header = () => {
       }}
       className="w-full bg-black px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between text-white border-b border-zinc-900/50 relative z-50 select-none"
     >
-      {/* LEFT AREA: Logo & Mobile Profile Action */}
-      <div className="flex items-center justify-between w-full md:w-auto px-4 md:px-[2.5vw]">
+      <div className="flex items-center justify-between w-full md:w-auto px-4 md:px-[2.5vw] relative z-50">
         <div onClick={() => navigate('/')} className="cursor-pointer">
           <img 
             src={logo} 
@@ -108,22 +116,29 @@ const Header = () => {
           />
         </div>
         
-        {/* MOBILE LAYOUT BAR CONTROLS */}
-        <div className="flex items-center gap-3 md:hidden">
-          {/* 📱 MOBILE PROFILE LINK: Automatically appends instantly on login */}
+        <div className="flex items-center gap-2 md:hidden relative z-[99]">
           {user && (
-            <div 
-              onClick={() => navigate('/profile')}
-              className="flex items-center justify-center w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 text-[#E2B747] font-bold text-sm cursor-pointer hover:border-[#E2B747] transition-all"
-              title="View Profile"
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setShowUserSidebar(true);
+              }}
+              className="flex items-center justify-center w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 text-[#E2B747] font-bold text-sm cursor-pointer hover:border-[#E2B747] active:scale-95 transition-all touch-manipulation m-1"
+              title="Open Account Menu"
             >
               {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
-            </div>
+            </button>
           )}
 
           <button 
-            onClick={() => setIsOpen(!isOpen)} 
-            className="text-zinc-300 hover:text-white focus:outline-none p-2"
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsOpen(!isOpen);
+            }} 
+            className="text-zinc-300 hover:text-white focus:outline-none p-2 touch-manipulation"
           >
             {isOpen ? (
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -138,21 +153,19 @@ const Header = () => {
         </div>
       </div>
 
-      {/* RIGHT AREA: Nav items */}
       <div 
-        className={`${isOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 text-sm font-medium text-zinc-400 mt-4 md:mt-0 w-full md:w-auto transition-all duration-300`}
+        className={`${isOpen ? 'flex pointer-events-auto' : 'hidden md:flex pointer-events-none md:pointer-events-auto'} flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 text-sm font-medium text-zinc-400 mt-4 md:mt-0 w-full md:w-auto transition-all duration-300 relative z-40`}
         onClick={() => setShowNotif(false)}
       >
-        <Link to="/destinations" onClick={() => setIsOpen(false)} className="hover:text-white transition">Destination</Link>
-        <Link to="/aayam-club" onClick={() => setIsOpen(false)} className="hover:text-white transition">Aayam Club</Link>
+        <Link to="/destinations" onClick={() => setIsOpen(false)} className="hover:text-white transition pointer-events-auto">Destination</Link>
+        <Link to="/aayam-club" onClick={() => setIsOpen(false)} className="hover:text-white transition pointer-events-auto">Aayam Club</Link>
         
-        <a href="#offers-section" onClick={handleOffersClick} className="hover:text-white transition cursor-pointer">
+        <a href="#offers-section" onClick={handleOffersClick} className="hover:text-white transition cursor-pointer pointer-events-auto">
           Offers
         </a>
 
-        {/* 🔔 NOTIFICATION DROPDOWN */}
         <div 
-          className="relative w-full md:w-auto"
+          className="relative w-full md:w-auto pointer-events-auto"
           onMouseEnter={() => setShowNotif(true)}
           onMouseLeave={() => setShowNotif(false)}
         >
@@ -208,40 +221,129 @@ const Header = () => {
         <Link 
           to="/about-us" 
           onClick={() => setIsOpen(false)} 
-          className="hover:text-white transition w-full md:w-auto py-1 md:py-0"
+          className="hover:text-white transition w-full md:w-auto py-1 md:py-0 pointer-events-auto"
         >
           About Us
         </Link>
         
-        {/* 💻 DESKTOP AUTH LAYOUT VIEW */}
         {user ? (
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-3 w-full md:w-auto border-t border-zinc-900 pt-3 md:pt-0 md:border-none">
+          <div className="hidden md:flex items-center gap-3 pointer-events-auto">
             <div 
-              onClick={() => { setIsOpen(false); navigate('/profile'); }}
-              className="flex items-center gap-2 cursor-pointer hover:text-white transition"
+              onClick={() => setShowUserSidebar(true)}
+              className="flex items-center gap-2 cursor-pointer group"
             >
-              <div className="hidden md:flex items-center justify-center w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 text-[#E2B747] font-bold text-xs uppercase">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 text-[#E2B747] font-bold text-xs uppercase group-hover:border-[#E2B747]/60 transition-colors">
                 {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
               </div>
-              <span className="text-zinc-200 font-medium text-xs tracking-wide">Hi, {user.name || 'User'}</span>
+              <span className="text-zinc-200 group-hover:text-white font-medium text-xs tracking-wide transition-colors">
+                Hi, <span className="text-[#E2B747]">{user.name || 'User'}</span> ▾
+              </span>
             </div>
-            <button 
-              onClick={handleLogout}
-              className="text-red-400/80 hover:text-red-400 text-xs font-medium cursor-pointer py-1 md:py-0 transition"
-            >
-              Logout
-            </button>
           </div>
         ) : (
           <Link 
             to="/login" 
             onClick={() => setIsOpen(false)} 
-            className="bg-zinc-900 border border-zinc-800 text-[#E2B747] hover:bg-[#E2B747] hover:text-black transition-all duration-300 px-6 py-1.5 rounded-xl font-bold text-xs uppercase tracking-wider text-center w-full md:w-auto"
+            className="bg-zinc-900 border border-zinc-800 text-[#E2B747] hover:bg-[#E2B747] hover:text-black transition-all duration-300 px-6 py-1.5 rounded-xl font-bold text-xs uppercase tracking-wider text-center w-full md:w-auto pointer-events-auto block"
           >
             Log-In
           </Link>
         )}
       </div>
+
+      {user && (
+        <div className={`fixed inset-0 z-[10000] bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${showUserSidebar ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+          <div 
+            ref={sidebarRef}
+            className={`fixed top-0 right-0 h-full w-[290px] sm:w-[350px] bg-[#0b0e14] border-l border-zinc-900/80 shadow-[[-15px_0_40px_rgba(0,0,0,0.7)]] p-6 flex flex-col justify-between transform transition-transform duration-300 ease-out ${showUserSidebar ? 'translate-x-0' : 'translate-x-full'}`}
+            onClick={(e) => e.stopPropagation()} 
+          >
+            <div>
+              <div className="flex items-center justify-between border-b border-zinc-900 pb-5 mb-6">
+                <h3 className="text-[10px] font-bold tracking-[0.2em] text-[#E2B747] uppercase">Account Console</h3>
+                <button 
+                  type="button"
+                  onClick={() => setShowUserSidebar(false)}
+                  className="text-zinc-500 hover:text-white transition text-xs p-1 cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="bg-zinc-950/80 border border-zinc-900 p-4 rounded-2xl flex flex-col items-center text-center space-y-3 mb-6">
+                <div className="w-14 h-14 rounded-full bg-zinc-900 border border-zinc-800 text-[#E2B747] font-serif font-bold text-lg flex items-center justify-center shadow-inner">
+                  {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                </div>
+                <div>
+                  <h4 className="text-sm font-serif font-medium text-white">{user.name || 'Aayam Member'}</h4>
+                  <span className="text-[9px] font-mono tracking-widest text-[#E2B747] uppercase px-2 py-0.5 bg-[#E2B747]/5 border border-[#E2B747]/20 rounded-md mt-1 inline-block">
+                    {user.role || 'MEMBER'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-4 px-1 text-xs">
+                <div className="flex flex-col space-y-0.5">
+                  <span className="text-[10px] text-zinc-500 font-light tracking-wide">Registered Email</span>
+                  <span className="text-zinc-300 font-medium break-all">{user.email || 'Not setup yet'}</span>
+                </div>
+                <div className="flex flex-col space-y-0.5">
+                  <span className="text-[10px] text-zinc-500 font-light tracking-wide">Phone Reference</span>
+                  <span className="text-zinc-300 font-medium">{user.phone || 'Not setup yet'}</span>
+                </div>
+                {user.address && (
+                  <div className="flex flex-col space-y-0.5">
+                    <span className="text-[10px] text-zinc-500 font-light tracking-wide">Primary Location</span>
+                    <span className="text-zinc-300 font-medium truncate">{user.address}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="space-y-3 border-t border-zinc-900 pt-5">
+              <button 
+                type="button"
+                onClick={() => {
+                  setShowUserSidebar(false); 
+                  setShowAgreementModal(true); // Is click se modal handle hoga
+                }}
+                className="w-full h-11 border border-zinc-850 hover:border-zinc-750 bg-[#E2B747]/5 hover:bg-[#E2B747]/10 text-[#E2B747] font-medium text-xs rounded-xl transition duration-200 cursor-pointer flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(226,183,71,0.05)]"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Agreement Licenses
+              </button>
+
+              <button 
+                type="button"
+                onClick={() => { setShowUserSidebar(false); navigate('/profile'); }}
+                className="w-full h-11 border border-zinc-800 hover:border-zinc-700 bg-zinc-900/40 hover:bg-zinc-900 text-white font-medium text-xs rounded-xl transition duration-200 cursor-pointer"
+              >
+                View Complete Profile
+              </button>
+              
+              <button 
+                type="button"
+                onClick={handleLogout}
+                className="w-full h-11 bg-red-950/10 hover:bg-red-950/20 border border-red-900/20 text-red-400 font-medium text-xs rounded-xl transition duration-200 cursor-pointer"
+              >
+                Secure Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── 📦 DYNAMIC REAL API CONNECTED MODAL CONSOLE ─── */}
+      {/* 👈 FIXED: Yahan state validation lagaya hai, aur user ke model se agreement URL direct pass kiya hai */}
+      {showAgreementModal && (
+        <AgreementModal 
+          documentUrl={user?.agreementUrl || ""} // MongoDB model me user data ke andar jo link hai vo chala jayega
+          onClose={() => setShowAgreementModal(false)} 
+        />
+      )}
+
     </nav>
   )
 }
