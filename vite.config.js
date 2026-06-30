@@ -4,5 +4,10 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(),  tailwindcss()],
+  plugins: [react(), tailwindcss()],
+  
+  // 👇 Bas itna chahiye SPA routing ke liye
+  server: {
+    historyApiFallback: true
+  }
 })

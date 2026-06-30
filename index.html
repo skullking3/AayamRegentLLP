@@ -5,39 +5,75 @@
     <link rel="icon" type="image/svg+xml" href="/src/assets/Favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- 1. SEO Title (Max 60 characters) -->
+    <!-- Primary Meta Tags -->
     <title>Aayam Regent LLP | Premium Travel & Hospitality Services</title>
-
-    <!-- 2. Meta Description (Max 160 characters) -->
+    <meta name="title" content="Aayam Regent LLP | Premium Travel & Hospitality Services">
     <meta name="description" content="Discover premium hospitality and seamless travel management with Aayam Regent LLP. We curate luxury stays, corporate tours, and unforgettable travel experiences." />
-
-    <!-- 3. Robots Tag (Google ko allow karne ke liye) -->
+    <meta name="keywords" content="travel, hospitality, Aayam Regent, hotel booking, corporate tours, luxury travel, India travel">
+    <meta name="author" content="Aayam Regent LLP">
     <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.aayamregent.in/" />
 
-    <!-- 4. Open Graph Tags (Jab link WhatsApp/LinkedIn pe share karoge toh mast card dikhega) -->
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.aayamregent.in/" />
     <meta property="og:title" content="Aayam Regent LLP | Premium Travel & Hospitality" />
     <meta property="og:description" content="Discover premium hospitality and seamless travel management with Aayam Regent LLP." />
-    <meta property="og:url" content="https://www.aayamregent.in/" />
+    <meta property="og:image" content="https://www.aayamregent.in/og-image.jpg" />
+    <meta property="og:site_name" content="Aayam Regent LLP" />
+    <meta property="og:locale" content="en_IN" />
 
-    <!-- 5. Schema Markup / Structured Data (AI aur Google Search ke liye naya danda) -->
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://www.aayamregent.in/" />
+    <meta property="twitter:title" content="Aayam Regent LLP | Premium Travel & Hospitality" />
+    <meta property="twitter:description" content="Discover premium hospitality and seamless travel management with Aayam Regent LLP." />
+    <meta property="twitter:image" content="https://www.aayamregent.in/og-image.jpg" />
+
+    <!-- Schema Markup -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "TravelAgency",
       "name": "Aayam Regent LLP",
       "url": "https://www.aayamregent.in/",
-      "logo": "https://www.aayamregent.in/src/assets/Favicon.png",
+      "logo": "https://www.aayamregent.in/logo.png",
       "description": "Premium hospitality and customized travel management services in India.",
       "address": {
         "@type": "PostalAddress",
         "addressCountry": "IN"
-      }
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+91-XXXXXXXXXX",
+        "contactType": "customer service"
+      },
+      "sameAs": [
+        "https://www.facebook.com/aayamregent",
+        "https://www.instagram.com/aayamregent",
+        "https://www.linkedin.com/company/aayamregent"
+      ]
     }
     </script>
+
+    <!-- Preload Important Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Sitemap -->
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Fallback for non-JS users -->
+    <noscript>
+      <div style="text-align: center; padding: 50px;">
+        <h1>Aayam Regent LLP</h1>
+        <p>Please enable JavaScript to view this website.</p>
+        <p>Contact us: info@aayamregent.in</p>
+      </div>
+    </noscript>
   </body>
 </html>
