@@ -16,39 +16,69 @@ const StaffLogin = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setErrorMessage('');
-  
-  try {
-    const API_URL = import.meta.env.VITE_API_URL; 
-    const response = await fetch(`${API_URL}/api/staff/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: formData.username,
-        password: formData.password
-      }),
-    });
-
-    const data = await response.json();
+    e.preventDefault();
+    setLoading(true);
+    setErrorMessage('');
     
-    if (response.ok && data.success) { 
-        // 1. Role aur User Data set karo (Dashboard.jsx ke liye ye zaroori hai)
-        localStorage.setItem('staffRole', data.role); // Role: SuperAdmin, Manager, etc.
-        localStorage.setItem('user', JSON.stringify({ name: data.username }));
+    try {
+      const API_URL = import.meta.env.VITE_API_URL; 
+      
+      console.log('🔐 Login attempt for:', formData.username);
+      console.log('📍 API URL:', API_URL);
+      
+      const response = await fetch(`${API_URL}/api/staff/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password
+        }),
+      });
+
+      const data = await response.json();
+      console.log('📥 Server Response:', data);
+      
+      if (response.ok && data.success) {
+        console.log('✅ Login successful!');
         
-        // 2. SABKO ek hi dashboard par bhejo
-        navigate('/dashboard'); 
-    } else {
+        // Store user data in localStorage
+        const userData = {
+          name: data.username || data.name || formData.username,
+          role: data.role || 'STAFF',
+          token: data.token || '',
+          isLoggedIn: true,
+          loginTime: new Date().toISOString()
+        };
+        
+        localStorage.setItem('staffRole', data.role || 'STAFF');
+        localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('token', data.token || '');
+        localStorage.setItem('isAuthenticated', 'true');
+        
+        if (rememberMe) {
+          localStorage.setItem('rememberMe', 'true');
+        }
+        
+        console.log('💾 Stored user data:', userData);
+        console.log('🚀 Redirecting to dashboard...');
+        
+        // Redirect to dashboard
+        navigate('/dashboard', { replace: true });
+        
+        // Alternative: agar navigate kaam na kare toh
+        // window.location.href = '/dashboard';
+        
+      } else {
+        console.error('❌ Login failed:', data);
         setErrorMessage(data.message || 'Unauthorized Gateway! Invalid Credentials.');
+      }
+    } catch (error) {
+      console.error('❌ Network Error:', error);
+      setErrorMessage('Network Connection Refused! Please check server connection.');
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    setErrorMessage('Network Connection Refused! Make sure Spring Boot Server is running.');
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <div className="w-full min-h-[calc(100vh-140px)] bg-black flex items-center justify-center font-sans px-4 py-12 relative overflow-hidden select-none">
@@ -129,7 +159,7 @@ const StaffLogin = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-red-900 transition-colors"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-gray-300 transition-colors"
               >
                 {showPassword ? (
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-4 h-4">
