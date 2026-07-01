@@ -41,7 +41,7 @@ const StaffLogin = () => {
       if (response.ok && data.success) {
         console.log('✅ Login successful!');
         
-        // Store user data in localStorage
+        // User data object
         const userData = {
           name: data.username || data.name || formData.username,
           role: data.role || 'STAFF',
@@ -50,23 +50,28 @@ const StaffLogin = () => {
           loginTime: new Date().toISOString()
         };
         
-        localStorage.setItem('staffRole', data.role || 'STAFF');
-        localStorage.setItem('user', JSON.stringify(userData));
-        localStorage.setItem('token', data.token || '');
+        // 🔑 IMPORTANT: localStorage keys MUST match ProtectedRoute
         localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('staffRole', data.role || 'STAFF');
+        localStorage.setItem('staffToken', data.token || 'authenticated');
+        localStorage.setItem('token', data.token || '');
+        localStorage.setItem('user', JSON.stringify(userData));
         
+        // Remember me
         if (rememberMe) {
           localStorage.setItem('rememberMe', 'true');
         }
         
-        console.log('💾 Stored user data:', userData);
+        console.log('💾 Stored in localStorage:');
+        console.log('  - isAuthenticated:', localStorage.getItem('isAuthenticated'));
+        console.log('  - staffRole:', localStorage.getItem('staffRole'));
+        console.log('  - staffToken:', localStorage.getItem('staffToken'));
+        console.log('  - user:', localStorage.getItem('user'));
+        
         console.log('🚀 Redirecting to dashboard...');
         
         // Redirect to dashboard
         navigate('/dashboard', { replace: true });
-        
-        // Alternative: agar navigate kaam na kare toh
-        // window.location.href = '/dashboard';
         
       } else {
         console.error('❌ Login failed:', data);
